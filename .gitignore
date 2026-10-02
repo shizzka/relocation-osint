@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+data/
+*.xlsx
+PROJECT_MEMORY.md
+AGENTS.md
+destinations.json
+countries.txt
+source_policy.json
+geography_aliases.json
+prompts/osint.txt
+prompts/judge.txt
+check_6am.py
