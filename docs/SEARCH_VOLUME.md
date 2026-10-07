@@ -238,3 +238,34 @@ search_amplification =
 ```
 
 This factor should be visible per run/provider and used for quota forecasting.
+
+
+### Archived shortlist context
+
+Earlier project planning used an archived shortlist of approximately **32 countries**.
+
+Combining that with the observed exhaustion:
+
+```text
+800 searches consumed
+before even half of 32 countries were completed
+```
+
+gives a practical lower bound of roughly:
+
+```text
+> 800 / 15
+> 53 physical searches per completed country
+```
+
+if "less than half" means at most 15 completed countries.
+
+A linear projection for all 32 countries would therefore exceed:
+
+```text
+32 × 53 ≈ 1,700 searches
+```
+
+and could be materially higher if fewer than 15 countries had actually completed when the 800-search pool was exhausted.
+
+This historical observation should be treated as a capacity-planning baseline, not a precise deterministic formula.
