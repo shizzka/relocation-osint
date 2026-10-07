@@ -187,3 +187,54 @@ For a shortlist with roughly two cities per country, a useful planning estimate 
 ```
 
 before retries/failover and with one retrieval lane.
+
+
+## Observed historical usage
+
+A real earlier OSINT run exhausted approximately:
+
+```text
+4 Ollama accounts × ~200 web searches/account
+≈ 800 web-search quota
+```
+
+and this happened **before the run had covered even half of the configured countries**.
+
+This is an operational observation and is more important for capacity planning than the current idealized logical-query formula.
+
+Under broadly similar behavior, a complete pass over that same destination set would therefore have required **more than ~1,600 web searches**, before allowing for additional retries, provider fallback attempts, reruns, or query expansion.
+
+Do not interpret `8 × countries + 12 × destinations` as a historical estimate of actual consumption. It describes the **current shared-evidence implementation's logical minimum**, not the observed consumption of the earlier research flow.
+
+The large gap between logical minimum and observed historical usage can come from architecture such as:
+
+- multiple researchers performing their own retrieval rather than sharing one evidence pack;
+- multiple search steps/query variants inside an agentic research call;
+- retries and provider/account failover;
+- repeated evidence refreshes;
+- unfinished runs being resumed/restarted in a way that repeats some retrieval;
+- model-driven search loops where one high-level research task invokes several underlying web searches.
+
+This historical result is a key reason to keep search accounting as a first-class metric rather than estimating it only from destination count.
+
+### Capacity-planning rule
+
+Until a new end-to-end benchmark proves otherwise, plan Search Gateway capacity using two numbers:
+
+1. **Current-code logical minimum**: approximately 12–20 logical searches per destination, depending on country sharing.
+2. **Observed historical worst-case baseline**: >1,600 underlying web-search calls for the full prior shortlist, inferred from 800 calls consumed before half of the countries were completed.
+
+The Gateway should record both:
+
+- logical research queries requested by OSINT;
+- physical provider search calls actually billed/consumed.
+
+The ratio between them is the **search amplification factor**:
+
+```text
+search_amplification =
+    physical_provider_search_calls
+    / logical_research_queries
+```
+
+This factor should be visible per run/provider and used for quota forecasting.
