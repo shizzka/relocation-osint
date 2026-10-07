@@ -269,3 +269,23 @@ A linear projection for all 32 countries would therefore exceed:
 and could be materially higher if fewer than 15 countries had actually completed when the 800-search pool was exhausted.
 
 This historical observation should be treated as a capacity-planning baseline, not a precise deterministic formula.
+
+
+## Ollama account-wide exhaustion
+
+Observed in practice: consuming the full Ollama web-search allowance on an account caused ordinary LLM calls on that same account to return HTTP 429.
+
+Therefore Ollama search capacity must not be budgeted independently from Ollama LLM capacity.
+
+For capacity planning:
+
+```text
+usable_search_quota
+  != reported_search_quota
+```
+
+when the same account is also needed for model generation.
+
+A reserve should be held back for LLM workloads, or search and generation should use separate accounts where possible.
+
+This also means that four accounts with ~200 nominal search calls each do **not** safely provide 800 expendable search calls if those accounts are simultaneously part of the LLM fallback pool.
